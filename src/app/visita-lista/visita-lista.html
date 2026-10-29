@@ -1,0 +1,49 @@
+<section>
+  <header class="cabecera">
+    <h2>Visitas del día</h2>
+    <p class="contador">
+      <span><strong>{{ servicio.total() }}</strong> registradas</span>
+      <span><strong>{{ servicio.pendientes() }}</strong> pendientes</span>
+    </p>
+  </header>
+
+  <ul class="lista">
+    @for (v of servicio.visitas(); track v.id) {
+      <li class="visita">
+        <div class="datos">
+          <div class="linea">
+            <strong>{{ v.visitante }}</strong>
+            <span
+              class="estado"
+              [class.programada]="v.estado === 'Programada'"
+              [class.en-sitio]="v.estado === 'En sitio'"
+              [class.finalizada]="v.estado === 'Finalizada'"
+            >
+              {{ v.estado }}
+            </span>
+          </div>
+          <p>Doc. {{ v.documento }} · visita a {{ v.anfitrion }} · {{ v.motivo }}</p>
+          <p>{{ v.fecha }} · {{ v.horaIngreso }} a {{ v.horaSalida }} · {{ v.acompanantes.length }} acompañante(s)</p>
+        </div>
+        <div class="acciones">
+          @if (v.estado === 'Programada') {
+            <button type="button" (click)="servicio.cambiarEstado(v.id, 'En sitio')">Marcar ingreso</button>
+          } @else if (v.estado === 'En sitio') {
+            <button type="button" (click)="servicio.cambiarEstado(v.id, 'Finalizada')">Registrar salida</button>
+          }
+          <button type="button" class="eliminar" (click)="servicio.eliminar(v.id)">Eliminar</button>
+        </div>
+      </li>
+    } @empty {
+      <li class="vacio">Todavía no hay visitas registradas.</li>
+    }
+  </ul>
+
+  @defer (on interaction) {
+    <app-resumen-visitas />
+  } @placeholder {
+    <button type="button" class="secundario abrir-resumen">Ver resumen</button>
+  } @loading {
+    <p class="cargando">Cargando resumen…</p>
+  }
+</section>

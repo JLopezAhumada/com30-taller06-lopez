@@ -1,0 +1,136 @@
+<form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <h2>Registrar visita</h2>
+
+  <div class="campo">
+    <label for="visitante">Visitante</label>
+    <input id="visitante" formControlName="visitante" placeholder="Nombre completo" />
+    @let vi = form.controls.visitante;
+    @if (vi.invalid && (vi.touched || vi.dirty)) {
+      @if (vi.hasError('required')) {
+        <small class="error">El nombre del visitante es obligatorio.</small>
+      } @else if (vi.hasError('soloEspacios')) {
+        <small class="error">El nombre no puede tener solo espacios.</small>
+      } @else if (vi.hasError('minlength')) {
+        <small class="error">Mínimo {{ vi.getError('minlength').requiredLength }} caracteres.</small>
+      }
+    }
+  </div>
+
+  <div class="campo">
+    <label for="documento">Documento</label>
+    <input id="documento" formControlName="documento" inputmode="numeric" placeholder="Solo números" />
+    @let doc = form.controls.documento;
+    @if (doc.invalid && (doc.touched || doc.dirty)) {
+      @if (doc.hasError('required')) {
+        <small class="error">El documento es obligatorio.</small>
+      } @else if (doc.hasError('soloDigitos')) {
+        <small class="error">El documento solo puede tener números.</small>
+      } @else if (doc.hasError('minlength')) {
+        <small class="error">Mínimo {{ doc.getError('minlength').requiredLength }} dígitos.</small>
+      } @else if (doc.hasError('maxlength')) {
+        <small class="error">Máximo {{ doc.getError('maxlength').requiredLength }} dígitos.</small>
+      }
+    }
+  </div>
+
+  <div class="campo">
+    <label for="anfitrion">Anfitrión</label>
+    <input id="anfitrion" formControlName="anfitrion" placeholder="Persona que recibe la visita" />
+    @let an = form.controls.anfitrion;
+    @if (an.invalid && (an.touched || an.dirty)) {
+      @if (an.hasError('required')) {
+        <small class="error">Indique quién recibe la visita.</small>
+      } @else if (an.hasError('soloEspacios')) {
+        <small class="error">El anfitrión no puede tener solo espacios.</small>
+      }
+    }
+  </div>
+
+  <div class="campo">
+    <label for="motivo">Motivo</label>
+    <select id="motivo" formControlName="motivo">
+      <option value="" disabled>Seleccione</option>
+      @for (m of motivos; track m) {
+        <option [value]="m">{{ m }}</option>
+      }
+    </select>
+    @let mo = form.controls.motivo;
+    @if (mo.invalid && (mo.touched || mo.dirty)) {
+      <small class="error">Seleccione el motivo de la visita.</small>
+    }
+  </div>
+
+  <div class="fila-3">
+    <div class="campo">
+      <label for="fecha">Fecha</label>
+      <input id="fecha" type="date" formControlName="fecha" />
+      @let fe = form.controls.fecha;
+      @if (fe.invalid && (fe.touched || fe.dirty)) {
+        <small class="error">La fecha es obligatoria.</small>
+      }
+    </div>
+    <div class="campo">
+      <label for="horaIngreso">Ingreso</label>
+      <input id="horaIngreso" type="time" formControlName="horaIngreso" />
+      @let hi = form.controls.horaIngreso;
+      @if (hi.invalid && (hi.touched || hi.dirty)) {
+        <small class="error">Hora obligatoria.</small>
+      }
+    </div>
+    <div class="campo">
+      <label for="horaSalida">Salida</label>
+      <input id="horaSalida" type="time" formControlName="horaSalida" />
+      @let hs = form.controls.horaSalida;
+      @if (hs.invalid && (hs.touched || hs.dirty)) {
+        <small class="error">Hora obligatoria.</small>
+      }
+    </div>
+  </div>
+
+  @if (form.hasError('salidaNoPosterior')) {
+    <p class="error grupo">La hora de salida debe ser posterior a la hora de ingreso.</p>
+  }
+
+  <fieldset formArrayName="acompanantes">
+    <legend>Acompañantes</legend>
+
+    @for (fila of acompanantes.controls; track fila; let i = $index) {
+      <div class="acompanante" [formGroupName]="i">
+        <span class="num">{{ i + 1 }}</span>
+        <div class="campo">
+          <input formControlName="nombre" placeholder="Nombre" aria-label="Nombre del acompañante" />
+          @let no = fila.controls.nombre;
+          @if (no.invalid && (no.touched || no.dirty)) {
+            @if (no.hasError('required')) {
+              <small class="error">Nombre obligatorio.</small>
+            } @else if (no.hasError('soloEspacios')) {
+              <small class="error">No puede tener solo espacios.</small>
+            } @else if (no.hasError('minlength')) {
+              <small class="error">Mínimo 3 caracteres.</small>
+            }
+          }
+        </div>
+        <div class="campo">
+          <input formControlName="documento" inputmode="numeric" placeholder="Documento" aria-label="Documento del acompañante" />
+          @let dc = fila.controls.documento;
+          @if (dc.invalid && (dc.touched || dc.dirty)) {
+            @if (dc.hasError('required')) {
+              <small class="error">Documento obligatorio.</small>
+            } @else if (dc.hasError('soloDigitos')) {
+              <small class="error">Solo números.</small>
+            }
+          }
+        </div>
+        <button type="button" class="quitar" (click)="quitarAcompanante(i)">Quitar</button>
+      </div>
+    }
+
+    @if (acompanantes.hasError('minimoFilas')) {
+      <p class="error">Agregue al menos un acompañante.</p>
+    }
+
+    <button type="button" class="secundario" (click)="agregarAcompanante()">+ Agregar acompañante</button>
+  </fieldset>
+
+  <button type="submit" class="primario" [disabled]="form.invalid">Registrar visita</button>
+</form>
