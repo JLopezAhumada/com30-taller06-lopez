@@ -1,0 +1,101 @@
+:root {
+  --fondo: #fafaf9;
+  --fondo-suave: #f1f1ef;
+  --superficie: #ffffff;
+  --texto: #1c1c1a;
+  --texto-suave: #5f5f5a;
+  --borde: #e2e2de;
+  --acento: #1d5c4a;
+  --error: #b42318;
+  --error-fondo: #fdf3f2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: var(--superficie);
+  color: var(--texto);
+}
+
+input::placeholder {
+  color: #6e6e69;
+}
+
+input:focus,
+select:focus,
+button:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+}
+
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: var(--error);
+}
+
+button {
+  cursor: pointer;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: var(--superficie);
+  color: var(--texto);
+}
+
+button:hover:not(:disabled) {
+  background: var(--fondo-suave);
+}
+
+button.primario {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #fff;
+  font-weight: 500;
+  padding: 0.65rem 1rem;
+}
+
+button.primario:hover:not(:disabled) {
+  background: #164a3b;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+button.secundario {
+  align-self: flex-start;
+  border-style: dashed;
+}
+
+.error {
+  color: var(--error);
+  font-size: 0.8rem;
+}
+
+p.error {
+  margin: 0;
+}
