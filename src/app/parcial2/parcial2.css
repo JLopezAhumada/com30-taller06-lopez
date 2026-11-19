@@ -30,3 +30,11 @@ button {
   justify-self: start;
   margin-top: 0.5rem;
 }
+
+.busqueda {
+  margin-top: 2.5rem;
+}
+
+.busqueda p {
+  margin: 0.35rem 0;
+}

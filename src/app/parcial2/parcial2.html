@@ -41,4 +41,19 @@
 
     <button type="submit">Ver detalle</button>
   </form>
+
+  <section class="busqueda">
+    <h2>Buscar visitas</h2>
+    <input [formControl]="buscar" placeholder="Visitante, anfitrión o motivo" />
+    <p>Último valor: {{ ultimo() }}</p>
+    <p>Emisiones: {{ emisiones() }}</p>
+
+    <ul>
+      @for (v of filtradas(); track v.id) {
+        <li><strong>{{ v.visitante }}</strong> · visita a {{ v.anfitrion }} · {{ v.motivo }}</li>
+      } @empty {
+        <li>Sin visitas que coincidan.</li>
+      }
+    </ul>
+  </section>
 </main>
