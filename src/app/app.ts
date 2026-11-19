@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { VisitaForm } from './visita-form/visita-form';
-import { VisitaLista } from './visita-lista/visita-lista';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [VisitaForm, VisitaLista],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
