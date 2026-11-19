@@ -1,0 +1,12 @@
+<main>
+  <h1>Detalle</h1>
+  @if (valido()) {
+    <p>Código: {{ codigo() }}</p>
+    <p>Cantidad: {{ cantidad() }}</p>
+    <p>Bloques: {{ bloques() }}</p>
+    <p>Margen: {{ margen() }}</p>
+  } @else {
+    <p class="error">Código inválido</p>
+  }
+  <a routerLink="/parcial2">Volver</a>
+</main>
